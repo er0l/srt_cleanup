@@ -12,7 +12,7 @@ if [[ -z "$TARGET" ]] || [[ ! -e "$TARGET" ]]; then
 fi
 TARGET=`realpath -s "$TARGET"`
 find "$TARGET" -iname '*.srt' | while read filename; do
-        extension=`basename "$filename" | sed -E 's/^(\/.*\/)*(.*)(\.hr|\.sr|\.en|\.sr-Latn)\..*$/\3/'`
+        extension=`basename "$filename" | sed -E 's/^(\/.*\/)*(.*)(\.hr|\.sr|\.en|\.sr-Latn|\.bs)\..*$/\3/'`
         case $extension in
                 '.hr')
                         if [ $DEBUG ];then
@@ -32,6 +32,12 @@ find "$TARGET" -iname '*.srt' | while read filename; do
                         fi
                         lang=3
                         ;;
+                '.bs')
+                        if [ $DEBUG ];then
+                                echo $filename " is bosnian subtitle"
+                        fi
+                        lang=4
+                        ;;
                 *)
                         if [ $DEBUG ];then
                                 echo $filename " is unknown subitle"
@@ -40,7 +46,7 @@ find "$TARGET" -iname '*.srt' | while read filename; do
                         ;;
         esac
         if [ $lang -ge 1 ]; then
-                check_file=`basename "$filename" | sed -E 's/^(\/.*\/)*(.*)(\.hr|\.sr|\.en|\.sr-Latn)(\.srt)$/\2/'`
+                check_file=`basename "$filename" | sed -E 's/^(\/.*\/)*(.*)(\.hr|\.sr|\.en|\.sr-Latn|\.bs)(\.srt)$/\2/'`
         else
                 check_file=`basename "$filename" | sed -E 's/^(\/.*\/)*(.*)\..*$/\2/'`
                 #echo $check_file
